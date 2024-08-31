@@ -1,0 +1,25 @@
+sudo: required
+services:
+  - docker
+
+
+before_install:
+  - docker build -t hamzawms/react-app -f ./client/Dockerfile.dev ./client
+
+
+script:
+  - docker run hamzawms/react-app npm test -- --coverage
+
+
+after_success:
+  - docker build -t hamzawms/multi-nginx ./nginx
+  - docker build -t hamzawms/multi-client ./client
+  - docker build -t hamzawms/multi-server ./server
+  - docker build -t hamzawms/multi-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  
+  - docker push hamzawms/multi-nginx
+  - docker push hamzawms/multi-client
+  - docker push hamzawms/multi-server
+  - docker push hamzawms/multi-worker
