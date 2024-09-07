@@ -11,12 +11,35 @@ app.use(bodyParser.json());
 
 // Postgres Client Setup
 const { Pool } = require('pg');
+
+console.log("PGDATABASE:", process.env.PGDATABASE);
+console.log("PGUSER:", process.env.PGUSER);
+console.log("PGPASSWORD:", process.env.PGPASSWORD);
+console.log("PGHOST:", process.env.PGHOST);
+console.log("PGPORT:", process.env.PGPORT);
+
+console.log("REDIS_HOST:", process.env.REDIS_HOST);
+console.log("REDIS_PORT:", process.env.REDIS_PORT);
+
+
+console.log("keys.pgDatabase:", keys.pgDatabase);
+console.log("keys.pgUser:", keys.pgUser);
+console.log("keys.pgPassword:", keys.pgPassword);
+console.log("keys.pgHost:", keys.pgHost);
+console.log("keys.pgPort:", keys.pgPort);
+
+console.log("keys.redisHost:", keys.redisHost);
+console.log("keys.redisPort:", keys.redisPort);
+
 const pgClient = new Pool({
   user: keys.pgUser,
   host: keys.pgHost,
   database: keys.pgDatabase,
   password: keys.pgPassword,
-  port: keys.pgPort
+  port: keys.pgPort,
+  ssl: {
+    rejectUnauthorized: false,  // In production, you might want to manage certificates properly
+  }
 });
 pgClient.on('connect', () => console.log('Successfully connected to PostgreSQL database'));
 pgClient.on('error', (err) => console.error('Lost PG connection', err));
