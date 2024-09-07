@@ -27,8 +27,7 @@ after_success:
 deploy:
   provider: elasticbeanstalk
   access_key_id: $AWS_ACCESS_KEY
-  secret_access_key:
-    secure: $AWS_SECRET_KEY
+  secret_access_key: $AWS_SECRET_KEY
   region: us-east-1
   app: react-app
   env: React-app-env
