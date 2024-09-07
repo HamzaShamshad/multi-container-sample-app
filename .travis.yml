@@ -23,3 +23,16 @@ after_success:
   - docker push hamzawms/multi-client
   - docker push hamzawms/multi-server
   - docker push hamzawms/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: eu-west-1
+  app: multi-container
+  env: Multi-container-env
+  bucket_name: elasticbeanstalk-eu-west-1-302263077770
+  bucket_path: docker-multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
